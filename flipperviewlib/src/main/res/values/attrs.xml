@@ -6,5 +6,6 @@
         <attr name="flipAxis" format="integer"/>
         <attr name="usePerspective" format="boolean"/>
         <attr name="duration" format="integer"/>
+        <attr name="tapToFlip" format="boolean"/>
     </declare-styleable>
 </resources>

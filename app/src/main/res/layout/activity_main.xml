@@ -12,6 +12,7 @@
     >
 
     <com.juniperphoton.flipperviewlib.FlipperView
+        android:id="@+id/flipper_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -64,4 +65,24 @@
             android:text="OK THAT'S A STOP"
             android:textColor="@android:color/white"/>
     </com.juniperphoton.flipperviewlib.FlipperView>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/prev_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Prev"/>
+
+        <Button
+            android:id="@+id/next_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Next"/>
+    </LinearLayout>
 </RelativeLayout>

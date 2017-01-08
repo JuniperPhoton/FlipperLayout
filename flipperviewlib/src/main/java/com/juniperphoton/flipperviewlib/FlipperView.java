@@ -23,8 +23,10 @@ public class FlipperView extends FrameLayout implements View.OnClickListener {
     private int mDisplayIndex = 0;
     private int mDuration;
     private int mFlipAxis;
-    private View mDisplayView;
+    private boolean mTapToFlip;
     private boolean mUsePerspective = true;
+
+    private View mDisplayView;
 
     private boolean mPrepared;
     private boolean mAnimating;
@@ -38,6 +40,7 @@ public class FlipperView extends FrameLayout implements View.OnClickListener {
         mUsePerspective = typedArray.getBoolean(R.styleable.FlipperView_usePerspective, true);
         mFlipAxis = typedArray.getInt(R.styleable.FlipperView_flipAxis, DEFAULT_FLIP_AXIS);
         mDuration = typedArray.getInt(R.styleable.FlipperView_duration, DEFAULT_DURATION);
+        mTapToFlip = typedArray.getBoolean(R.styleable.FlipperView_tapToFlip, false);
         typedArray.recycle();
 
         setClipChildren(false);
@@ -74,6 +77,16 @@ public class FlipperView extends FrameLayout implements View.OnClickListener {
         nextIndex = checkIndex(nextIndex);
         mDisplayIndex = nextIndex;
         next(nextIndex);
+    }
+
+    public void previous() {
+        if (!mPrepared) {
+            prepare();
+        }
+        int prevIndex = mDisplayIndex - 1;
+        prevIndex = checkIndex(prevIndex);
+        mDisplayIndex = prevIndex;
+        next(prevIndex);
     }
 
     public void next(int nextIndex) {
@@ -125,6 +138,7 @@ public class FlipperView extends FrameLayout implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        if (!mTapToFlip) return;
         if (mAnimating) return;
         next();
     }
