@@ -20,7 +20,9 @@
         android:clipToPadding="false"
         android:foreground="?android:attr/selectableItemBackground"
         android:padding="20dp"
-        app:default_index="0">
+        app:defaultIndex="0"
+        app:flipAxis="0"
+        >
 
         <TextView
             android:layout_width="200dp"

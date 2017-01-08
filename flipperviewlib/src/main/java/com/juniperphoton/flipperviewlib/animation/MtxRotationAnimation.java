@@ -4,20 +4,30 @@ import android.graphics.Camera;
 import android.graphics.Matrix;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Transformation;
 
 public class MtxRotationAnimation extends Animation {
+    public final static int ROTATION_X = 1;
+    public final static int ROTATION_Y = 1 << 1;
+
     private int mCenterX, mCenterY;
     private Camera mCamera = new Camera();
 
     private int mFromDeg;
     private int mToDeg;
+    private int mRotationAxis = ROTATION_X;
 
-    public MtxRotationAnimation(int fromDeg, int toDeg, int duration) {
+    private boolean mUsePerspective = true;
+
+    public MtxRotationAnimation(int rotationAxis, int fromDeg, int toDeg, int duration) {
         mFromDeg = fromDeg;
         mToDeg = toDeg;
+        mRotationAxis = rotationAxis;
         setDuration(duration);
+    }
+
+    public void setUsePerspective(boolean usePerspective) {
+        mUsePerspective = usePerspective;
     }
 
     @Override
@@ -34,12 +44,16 @@ public class MtxRotationAnimation extends Animation {
     protected void applyTransformation(float interpolatedTime, Transformation transform) {
         super.applyTransformation(interpolatedTime, transform);
 
-        int deltaDeg = mToDeg - mFromDeg;
-        int deg = (int) (mFromDeg + deltaDeg * interpolatedTime);
+        int targetDeg = (int) (mFromDeg + (mToDeg - mFromDeg) * interpolatedTime);
 
         Matrix matrix = transform.getMatrix();
         mCamera.save();
-        mCamera.rotateX(deg);
+        if ((mRotationAxis & ROTATION_X) == ROTATION_X) {
+            mCamera.rotateX(targetDeg);
+        }
+        if ((mRotationAxis & ROTATION_Y) == ROTATION_Y) {
+            mCamera.rotateY(targetDeg);
+        }
         mCamera.getMatrix(matrix);
         matrix.preTranslate(-mCenterX, -mCenterY);
         matrix.postTranslate(mCenterX, mCenterY);
@@ -47,7 +61,12 @@ public class MtxRotationAnimation extends Animation {
     }
 
     public static void setRotationX(View view, int deg) {
-        MtxRotationAnimation animation = new MtxRotationAnimation(deg, deg, 1);
+        MtxRotationAnimation animation = new MtxRotationAnimation(ROTATION_X, deg, deg, 1);
+        view.startAnimation(animation);
+    }
+
+    public static void setRotationY(View view, int deg) {
+        MtxRotationAnimation animation = new MtxRotationAnimation(ROTATION_Y, deg, deg, 1);
         view.startAnimation(animation);
     }
 }

@@ -17,10 +17,12 @@ public class FlipperView extends FrameLayout implements View.OnClickListener {
     private final static int FLIP_DIRECTION_BACK_TO_FRONT = 0;
     private final static int FLIP_DIRECTION_FRONT_TO_BACK = 1;
     private final static int DEFAULT_DURATION = 200;
+    private final static int DEFAULT_FLIP_AXIS = 0;
 
     private int mFlipDirection;
     private int mDisplayIndex = 0;
     private int mDuration;
+    private int mFlipAxis;
     private View mDisplayView;
     private boolean mUsePerspective = true;
 
@@ -31,14 +33,25 @@ public class FlipperView extends FrameLayout implements View.OnClickListener {
         super(context, attrs);
 
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.FlipperView);
-        mDisplayIndex = typedArray.getInt(R.styleable.FlipperView_default_index, 0);
-        mFlipDirection = typedArray.getInt(R.styleable.FlipperView_flip_direction, 0);
-        mUsePerspective = typedArray.getBoolean(R.styleable.FlipperView_use_perspective, true);
+        mDisplayIndex = typedArray.getInt(R.styleable.FlipperView_defaultIndex, 0);
+        mFlipDirection = typedArray.getInt(R.styleable.FlipperView_flipDirection, 0);
+        mUsePerspective = typedArray.getBoolean(R.styleable.FlipperView_usePerspective, true);
+        mFlipAxis = typedArray.getInt(R.styleable.FlipperView_flipAxis, DEFAULT_FLIP_AXIS);
         mDuration = typedArray.getInt(R.styleable.FlipperView_duration, DEFAULT_DURATION);
         typedArray.recycle();
 
         setClipChildren(false);
         setOnClickListener(this);
+    }
+
+    private int getMtxRotationAxis() {
+        if (mFlipAxis == 0) {
+            return MtxRotationAnimation.ROTATION_X;
+        }
+        if (mFlipAxis == 1) {
+            return MtxRotationAnimation.ROTATION_Y;
+        }
+        return MtxRotationAnimation.ROTATION_X;
     }
 
     private void prepare() {
@@ -66,10 +79,16 @@ public class FlipperView extends FrameLayout implements View.OnClickListener {
     public void next(int nextIndex) {
         final View nextView = getChildAt(nextIndex);
         nextView.setVisibility(VISIBLE);
-        MtxRotationAnimation.setRotationX(nextView, mFlipDirection == FLIP_DIRECTION_BACK_TO_FRONT ? -90 : 90);
+        int axis = getMtxRotationAxis();
+        if (axis == MtxRotationAnimation.ROTATION_X) {
+            MtxRotationAnimation.setRotationX(nextView, mFlipDirection == FLIP_DIRECTION_BACK_TO_FRONT ? -90 : 90);
+        } else {
+            MtxRotationAnimation.setRotationY(nextView, mFlipDirection == FLIP_DIRECTION_BACK_TO_FRONT ? -90 : 90);
+        }
 
-        final MtxRotationAnimation enterAnimation = new MtxRotationAnimation(
+        final MtxRotationAnimation enterAnimation = new MtxRotationAnimation(axis,
                 mFlipDirection == FLIP_DIRECTION_BACK_TO_FRONT ? 90 : -90, 0, mDuration);
+        enterAnimation.setUsePerspective(mUsePerspective);
         enterAnimation.setAnimationListener(new AnimationEnd() {
             @Override
             public void onAnimationEnd(Animation animation) {
@@ -77,8 +96,10 @@ public class FlipperView extends FrameLayout implements View.OnClickListener {
                 mAnimating = false;
             }
         });
-        MtxRotationAnimation leftAnimation = new MtxRotationAnimation(0,
-                mFlipDirection == FLIP_DIRECTION_BACK_TO_FRONT ? -90 : 90, mDuration);
+
+        MtxRotationAnimation leftAnimation = new MtxRotationAnimation(axis,
+                0, mFlipDirection == FLIP_DIRECTION_BACK_TO_FRONT ? -90 : 90, mDuration);
+        leftAnimation.setUsePerspective(mUsePerspective);
         leftAnimation.setAnimationListener(new AnimationEnd() {
             @Override
             public void onAnimationEnd(Animation animation) {

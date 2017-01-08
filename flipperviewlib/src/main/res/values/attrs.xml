@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="FlipperView">
-        <attr name="default_index" format="integer"/>
-        <attr name="flip_direction" format="integer"/>
-        <attr name="use_perspective" format="boolean"/>
+        <attr name="defaultIndex" format="integer"/>
+        <attr name="flipDirection" format="integer"/>
+        <attr name="flipAxis" format="integer"/>
+        <attr name="usePerspective" format="boolean"/>
         <attr name="duration" format="integer"/>
     </declare-styleable>
 </resources>
