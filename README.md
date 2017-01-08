@@ -1,4 +1,4 @@
-()# FlipperView
+# FlipperView
 Android version of [FlipperControl for UWP](https://github.com/JuniperPhoton/FlipperControl)
 
 A control that uses flip transition to change different states.
