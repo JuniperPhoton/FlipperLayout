@@ -20,7 +20,7 @@ FlipperView extends from `FrameLayout` so you can use it as a `FrameLayout` but 
         android:foreground="?android:attr/selectableItemBackground"
         android:padding="20dp"
         app:defaultIndex="0"
-        app:flipAxis="0"
+        app:flipAxis="X"
         >
 
         <TextView
