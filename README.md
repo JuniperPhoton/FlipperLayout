@@ -8,7 +8,7 @@ Works on API 19, but with more tests I think it can work well in API 16.
 
 ##How to use
 
-FlipperView extends from `FrameLayout` so you can use it as a `FrameLayout` but it only displays one child at a time and you can call `next()` to switch to another child. Please don't put views that do **heavy** work (e.g SurfaceView).
+FlipperView extends from `FrameLayout` so you can use it as a `FrameLayout` but it only displays one child at a time and you can call `next()` to switch to another child. Please don't put views that do **heavy** work.
 
     <com.juniperphoton.flipperviewlib.FlipperView
         android:layout_width="wrap_content"
@@ -58,10 +58,10 @@ Default display index of view. Note that the value of zero points to the first v
 ##flipDirection:int
 FlipDirection. 
 
-Setting it to **0** to makes it flip from back to front and setting it to **1** makes it flip from front to back.
+backToFront or frontToBack
 
 ##flipAxis:int
-**0** is for X and **1** is for Y
+`X` or `Y`
 
 ##duration:int
 Animation duration in millis. The default value is 200 which I think it's fast enough.
@@ -75,4 +75,4 @@ Current there are 3 ways to switch views:
 - next(int index);
 - previous();
 
-Please be aware of **IndexOutOfBoundsException**.
+Please be aware of *IndexOutOfBoundsException*.
