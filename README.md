@@ -58,10 +58,15 @@ Default display index of view. Note that the value of zero points to the first v
 ##flipDirection:int
 FlipDirection. 
 
-backToFront or frontToBack
+XML : `backToFront` or `frontToBack`
+
+JAVA : `FLIP_DIRECTION_BACK_TO_FRONT` or `FLIP_DIRECTION_FRONT_TO_BACK`
 
 ##flipAxis:int
-`X` or `Y`
+
+XML : `X` or `Y`
+
+JAVA : `AXIS_X` or `AXIS_Y`
 
 ##duration:int
 Animation duration in millis. The default value is 200 which I think it's fast enough.
