@@ -20,7 +20,6 @@
         android:clipChildren="false"
         android:clipToPadding="false"
         android:foreground="?android:attr/selectableItemBackground"
-        android:padding="20dp"
         app:defaultIndex="0"
         app:flipAxis="X"
         app:flipDirection="backToFront"
