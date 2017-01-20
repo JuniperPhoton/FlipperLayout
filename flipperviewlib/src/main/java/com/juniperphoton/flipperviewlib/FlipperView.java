@@ -5,6 +5,8 @@ import android.content.res.TypedArray;
 import android.support.annotation.IntDef;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.animation.Animation;
 import android.widget.FrameLayout;
 
@@ -122,6 +124,8 @@ public class FlipperView extends FrameLayout implements View.OnClickListener {
     }
 
     public void next(int nextIndex) {
+        if (mAnimating) return;
+
         final View nextView = getChildAt(nextIndex);
         nextView.setVisibility(VISIBLE);
         int axis = getMtxRotationAxis();
@@ -160,6 +164,17 @@ public class FlipperView extends FrameLayout implements View.OnClickListener {
         if (nextOrPrevIndex >= count) nextOrPrevIndex = 0;
         if (nextOrPrevIndex < 0) nextOrPrevIndex = getChildCount() - 1;
         return nextOrPrevIndex;
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        ViewParent parent = getParent();
+        // **Must** call setClipToPadding & setClipChildren in this method or onLayout
+        if (parent != null && parent instanceof ViewGroup) {
+            ((ViewGroup) parent).setClipToPadding(false);
+            ((ViewGroup) parent).setClipChildren(false);
+        }
     }
 
     @Override
