@@ -107,6 +107,7 @@ public class FlipperView extends FrameLayout implements View.OnClickListener {
         if (!mPrepared) {
             prepare();
         }
+        if (mAnimating) return;
         int nextIndex = mDisplayIndex + 1;
         nextIndex = checkIndex(nextIndex);
         mDisplayIndex = nextIndex;
@@ -117,6 +118,7 @@ public class FlipperView extends FrameLayout implements View.OnClickListener {
         if (!mPrepared) {
             prepare();
         }
+        if (mAnimating) return;
         int prevIndex = mDisplayIndex - 1;
         prevIndex = checkIndex(prevIndex);
         mDisplayIndex = prevIndex;
@@ -124,7 +126,6 @@ public class FlipperView extends FrameLayout implements View.OnClickListener {
     }
 
     public void next(int nextIndex) {
-        if (mAnimating) return;
 
         final View nextView = getChildAt(nextIndex);
         nextView.setVisibility(VISIBLE);
