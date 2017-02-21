@@ -41,7 +41,6 @@ public class FlipperView extends FrameLayout implements View.OnClickListener {
     private int mDuration;
     private int mFlipAxis;
     private boolean mTapToFlip;
-    private boolean mUsePerspective = true;
 
     private View mDisplayView;
 
@@ -54,7 +53,6 @@ public class FlipperView extends FrameLayout implements View.OnClickListener {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.FlipperView);
         mDisplayIndex = typedArray.getInt(R.styleable.FlipperView_defaultIndex, 0);
         mFlipDirection = typedArray.getInt(R.styleable.FlipperView_flipDirection, FLIP_DIRECTION_BACK_TO_FRONT);
-        mUsePerspective = typedArray.getBoolean(R.styleable.FlipperView_usePerspective, true);
         mFlipAxis = typedArray.getInt(R.styleable.FlipperView_flipAxis, AXIS_X);
         mDuration = typedArray.getInt(R.styleable.FlipperView_duration, DEFAULT_DURATION);
         mTapToFlip = typedArray.getBoolean(R.styleable.FlipperView_tapToFlip, false);
@@ -96,7 +94,7 @@ public class FlipperView extends FrameLayout implements View.OnClickListener {
         List<View> children = new ArrayList();
         for (int i = 0; i < getChildCount(); i++) {
             children.add(getChildAt(i));
-            getChildAt(i).setVisibility(GONE);
+            getChildAt(i).setVisibility(INVISIBLE);
         }
         mDisplayView = getChildAt(mDisplayIndex);
         mDisplayView.setVisibility(VISIBLE);
@@ -127,25 +125,22 @@ public class FlipperView extends FrameLayout implements View.OnClickListener {
     }
 
     public void next(int nextIndex) {
-        Log.d("flipperView", "nextIndex:" + nextIndex);
-
         final View nextView = getChildAt(nextIndex);
-        nextView.setVisibility(VISIBLE);
-        int axis = getMtxRotationAxis();
-        if (axis == MtxRotationAnimation.ROTATION_X) {
-            MtxRotationAnimation.setRotationX(nextView, mFlipDirection == FLIP_DIRECTION_BACK_TO_FRONT ? -90 : 90);
-        } else {
-            MtxRotationAnimation.setRotationY(nextView, mFlipDirection == FLIP_DIRECTION_BACK_TO_FRONT ? -90 : 90);
-        }
+        final int axis = getMtxRotationAxis();
 
         final MtxRotationAnimation enterAnimation = new MtxRotationAnimation(axis,
                 mFlipDirection == FLIP_DIRECTION_BACK_TO_FRONT ? 90 : -90, 0, mDuration);
-        enterAnimation.setStartOffset(mDuration);
         enterAnimation.setAnimationListener(new AnimationEnd() {
             @Override
             public void onAnimationEnd(Animation animation) {
                 mDisplayView = nextView;
                 mAnimating = false;
+                nextView.clearAnimation();
+            }
+
+            @Override
+            public void onAnimationStart(Animation animation) {
+                nextView.setVisibility(VISIBLE);
             }
         });
 
@@ -154,12 +149,12 @@ public class FlipperView extends FrameLayout implements View.OnClickListener {
         leftAnimation.setAnimationListener(new AnimationEnd() {
             @Override
             public void onAnimationEnd(Animation animation) {
-                mDisplayView.setVisibility(GONE);
+                mDisplayView.setVisibility(INVISIBLE);
                 mDisplayView.clearAnimation();
+                nextView.startAnimation(enterAnimation);
             }
         });
         mAnimating = true;
-        nextView.startAnimation(enterAnimation);
         mDisplayView.startAnimation(leftAnimation);
     }
 
