@@ -17,17 +17,11 @@ public class MtxRotationAnimation extends Animation {
     private int mToDeg;
     private int mRotationAxis = ROTATION_X;
 
-    private boolean mUsePerspective = true;
-
     public MtxRotationAnimation(int rotationAxis, int fromDeg, int toDeg, int duration) {
         mFromDeg = fromDeg;
         mToDeg = toDeg;
         mRotationAxis = rotationAxis;
         setDuration(duration);
-    }
-
-    public void setUsePerspective(boolean usePerspective) {
-        mUsePerspective = usePerspective;
     }
 
     @Override

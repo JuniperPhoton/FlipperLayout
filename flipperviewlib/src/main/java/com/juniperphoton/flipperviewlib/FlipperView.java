@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.IntDef;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -95,7 +96,7 @@ public class FlipperView extends FrameLayout implements View.OnClickListener {
         List<View> children = new ArrayList();
         for (int i = 0; i < getChildCount(); i++) {
             children.add(getChildAt(i));
-            getChildAt(i).setVisibility(INVISIBLE);
+            getChildAt(i).setVisibility(GONE);
         }
         mDisplayView = getChildAt(mDisplayIndex);
         mDisplayView.setVisibility(VISIBLE);
@@ -126,6 +127,7 @@ public class FlipperView extends FrameLayout implements View.OnClickListener {
     }
 
     public void next(int nextIndex) {
+        Log.d("flipperView", "nextIndex:" + nextIndex);
 
         final View nextView = getChildAt(nextIndex);
         nextView.setVisibility(VISIBLE);
@@ -138,7 +140,7 @@ public class FlipperView extends FrameLayout implements View.OnClickListener {
 
         final MtxRotationAnimation enterAnimation = new MtxRotationAnimation(axis,
                 mFlipDirection == FLIP_DIRECTION_BACK_TO_FRONT ? 90 : -90, 0, mDuration);
-        enterAnimation.setUsePerspective(mUsePerspective);
+        enterAnimation.setStartOffset(mDuration);
         enterAnimation.setAnimationListener(new AnimationEnd() {
             @Override
             public void onAnimationEnd(Animation animation) {
@@ -149,14 +151,15 @@ public class FlipperView extends FrameLayout implements View.OnClickListener {
 
         MtxRotationAnimation leftAnimation = new MtxRotationAnimation(axis,
                 0, mFlipDirection == FLIP_DIRECTION_BACK_TO_FRONT ? -90 : 90, mDuration);
-        leftAnimation.setUsePerspective(mUsePerspective);
         leftAnimation.setAnimationListener(new AnimationEnd() {
             @Override
             public void onAnimationEnd(Animation animation) {
-                nextView.startAnimation(enterAnimation);
+                mDisplayView.setVisibility(GONE);
+                mDisplayView.clearAnimation();
             }
         });
         mAnimating = true;
+        nextView.startAnimation(enterAnimation);
         mDisplayView.startAnimation(leftAnimation);
     }
 

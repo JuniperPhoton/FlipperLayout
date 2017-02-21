@@ -22,10 +22,11 @@
         android:foreground="?android:attr/selectableItemBackground"
         app:defaultIndex="0"
         app:flipAxis="X"
+        app:tapToFlip="false"
         app:flipDirection="backToFront"
         >
 
-        <TextView
+        <Button
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:background="@color/exampleColor1"
@@ -33,7 +34,7 @@
             android:text="TAP ME"
             android:textColor="@android:color/white"/>
 
-        <TextView
+        <Button
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:background="@color/exampleColor2"
@@ -41,7 +42,7 @@
             android:text="KEEP TAPPING"
             android:textColor="@android:color/white"/>
 
-        <TextView
+        <Button
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:background="@color/exampleColor3"
@@ -49,7 +50,7 @@
             android:text="TAP ME PLEASE"
             android:textColor="@android:color/white"/>
 
-        <TextView
+        <Button
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:background="@color/exampleColor4"
@@ -57,7 +58,7 @@
             android:text="DON'T STOP"
             android:textColor="@android:color/white"/>
 
-        <TextView
+        <Button
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:background="@color/exampleColor5"
