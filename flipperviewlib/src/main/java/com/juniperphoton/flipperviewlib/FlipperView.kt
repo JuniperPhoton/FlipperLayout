@@ -48,7 +48,10 @@ class FlipperView(ctx: Context, attrs: AttributeSet) : FrameLayout(ctx, attrs), 
      */
     var duration = DEFAULT_DURATION
 
-    private var tapToFlip: Boolean = true
+    /**
+     * All tap to flip
+     */
+    var tapToFlip: Boolean = true
 
     private lateinit var displayView: View
 
@@ -57,11 +60,11 @@ class FlipperView(ctx: Context, attrs: AttributeSet) : FrameLayout(ctx, attrs), 
 
     private var mtxRotation: Int = 0
         get() {
-            when (flipAxis) {
+            return when (flipAxis) {
                 AXIS_X -> MtxRotationAnimation.ROTATION_X
                 AXIS_Y -> MtxRotationAnimation.ROTATION_Y
+                else -> MtxRotationAnimation.ROTATION_X
             }
-            return MtxRotationAnimation.ROTATION_X
         }
 
     init {
