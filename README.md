@@ -1,8 +1,8 @@
 # FlipperView
-Android version of [FlipperControl for UWP](https://github.com/JuniperPhoton/FlipperControl)
+Android version of [FlipperControl for UWP](https://github.com/JuniperPhoton/FlipperControl) . Now it's written in Kotlin.
 
 A control that uses flip transition to change different states.
-Works on API 19, but with more tests I think it can work well in API 16.
+Works on API 19, but with more tests I think it works well on API 16.
 
 ![](https://github.com/JuniperPhoton/FlipperControl/blob/master/demo.gif)
 
@@ -22,7 +22,7 @@ FlipperView extends from `FrameLayout` so you can use it as a `FrameLayout` but 
         app:defaultIndex="0"
         app:flipAxis="X"
         >
-
+    
         <TextView
             android:layout_width="200dp"
             android:layout_height="50dp"
@@ -30,7 +30,7 @@ FlipperView extends from `FrameLayout` so you can use it as a `FrameLayout` but 
             android:gravity="center"
             android:text="TAP ME"
             android:textColor="@android:color/white"/>
-
+    
         <TextView
             android:layout_width="200dp"
             android:layout_height="50dp"
@@ -38,7 +38,7 @@ FlipperView extends from `FrameLayout` so you can use it as a `FrameLayout` but 
             android:gravity="center"
             android:text="KEEP TAPPING"
             android:textColor="@android:color/white"/>
-
+    
         <TextView
             android:layout_width="200dp"
             android:layout_height="50dp"
@@ -47,26 +47,26 @@ FlipperView extends from `FrameLayout` so you can use it as a `FrameLayout` but 
             android:text="TAP ME PLEASE"
             android:textColor="@android:color/white"/>
     </com.juniperphoton.flipperviewlib.FlipperView>
-    
+
 It has a sample proj to demonstrate how to use it.
 
 There are a few attrs that control the behavior:
 
 ##defaultIndex:int
-Default display index of view. Note that the value of zero points to the first view you declar in XML.
+Default display index of view. Note that the value of zero points to the first view you declare in XML.
 
 ##flipDirection:int
 FlipDirection. 
 
 XML : `backToFront` or `frontToBack`
 
-JAVA : `FLIP_DIRECTION_BACK_TO_FRONT` or `FLIP_DIRECTION_FRONT_TO_BACK`
+CODE: `FLIP_DIRECTION_BACK_TO_FRONT` or `FLIP_DIRECTION_FRONT_TO_BACK`
 
 ##flipAxis:int
 
 XML : `X` or `Y`
 
-JAVA : `AXIS_X` or `AXIS_Y`
+CODE: `AXIS_X` or `AXIS_Y`
 
 ##duration:int
 Animation duration in millis. The default value is 200 which I think it's fast enough.
@@ -74,10 +74,15 @@ Animation duration in millis. The default value is 200 which I think it's fast e
 ##tapToFlip:boolean
 Enable tap to flip or not. Default value is false.
 
-Current there are 3 ways to switch views:
+## Way to control the display of views
+
+Current there are **4** ways to switch views:
 
 - next();
 - next(int index);
 - previous();
+- displayIndex  <in Kotlin> & setDisplayIndex(int index) <in Java>;
+
+Note that the **displayIndex** is exposed as a property in `Kotlin` and set it value directly will do the animation itself.
 
 Please be aware of *IndexOutOfBoundsException*.
