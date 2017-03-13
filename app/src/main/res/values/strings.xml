@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">FlipperViewProj</string>
+    <string name="tap_me_0">TAP ME 0</string>
+    <string name="keep_tapping_1">KEEP TAPPING 1</string>
+    <string name="tap_me_please_2">TAP ME PLEASE 2</string>
+    <string name="don_t_stop_3">DON\'T STOP 3</string>
+    <string name="ok_that_s_a_stop_4">OK THAT\'S A STOP 4</string>
+    <string name="prev">Previous</string>
+    <string name="next">Next</string>
+
+    <string-array name="entities">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
 </resources>

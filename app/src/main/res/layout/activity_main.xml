@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -8,8 +7,7 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    >
+    android:paddingTop="@dimen/activity_vertical_margin">
 
     <com.juniperphoton.flipperviewlib.FlipperView
         android:id="@+id/flipper_view"
@@ -22,54 +20,53 @@
         android:foreground="?android:attr/selectableItemBackground"
         app:defaultIndex="0"
         app:flipAxis="X"
-        app:tapToFlip="false"
         app:flipDirection="backToFront"
-        >
+        app:tapToFlip="false">
 
         <Button
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:background="@color/exampleColor1"
             android:gravity="center"
-            android:text="TAP ME"
+            android:text="@string/tap_me_0"
             android:textColor="@android:color/white"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <Button
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:background="@color/exampleColor2"
             android:gravity="center"
-            android:text="KEEP TAPPING"
+            android:text="@string/keep_tapping_1"
             android:textColor="@android:color/white"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <Button
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:background="@color/exampleColor3"
             android:gravity="center"
-            android:text="TAP ME PLEASE"
+            android:text="@string/tap_me_please_2"
             android:textColor="@android:color/white"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <Button
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:background="@color/exampleColor4"
             android:gravity="center"
-            android:text="DON'T STOP"
+            android:text="@string/don_t_stop_3"
             android:textColor="@android:color/white"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <Button
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:background="@color/exampleColor5"
             android:gravity="center"
-            android:text="OK THAT'S A STOP"
+            android:text="@string/ok_that_s_a_stop_4"
             android:textColor="@android:color/white"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
     </com.juniperphoton.flipperviewlib.FlipperView>
 
     <LinearLayout
@@ -83,12 +80,19 @@
             android:id="@+id/prev_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Prev"/>
+            android:text="@string/prev" />
 
         <Button
             android:id="@+id/next_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Next"/>
+            android:text="@string/next" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:entries="@array/entities" />
     </LinearLayout>
 </RelativeLayout>
