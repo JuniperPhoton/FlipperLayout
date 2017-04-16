@@ -1,1 +1,1 @@
-include ':app', ':flipperviewlib'
+include ':app', ':flipperview'
