@@ -5,30 +5,20 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.Transformation
 
-class MtxRotationAnimation(axis: Int, from: Int, to: Int, duration: Long) : Animation() {
+class MtxRotationAnimation(private var rotationAxis: Int,
+                           private var fromDeg: Int,
+                           private var toDeg: Int, duration: Long) : Animation() {
     companion object {
-        val ROTATION_X = 1
-        val ROTATION_Y = 1 shl 1
-
-        fun setRotation(rotationFun: () -> Int, view: View, deg: Int) {
-            val animation = MtxRotationAnimation(rotationFun(), deg, deg, 1)
-            view.startAnimation(animation)
-        }
+        const val ROTATION_X = 1
+        const val ROTATION_Y = 1 shl 1
     }
 
-    var centerX = 0
-    var centerY = 0
+    private var centerX: Int = 0
+    private var centerY: Int = 0
 
-    val camera = Camera()
-
-    var fromDeg = 0
-    var toDeg = 0
-    var rotationAxis = ROTATION_X
+    private val camera: Camera = Camera()
 
     init {
-        rotationAxis = axis
-        fromDeg = from
-        toDeg = to
         setDuration(duration)
     }
 
@@ -41,12 +31,12 @@ class MtxRotationAnimation(axis: Int, from: Int, to: Int, duration: Long) : Anim
         fillAfter = true
     }
 
-    override fun applyTransformation(interpolatedTime: Float, transform: Transformation?) {
+    override fun applyTransformation(interpolatedTime: Float, transform: Transformation) {
         super.applyTransformation(interpolatedTime, transform)
 
         val targetDeg = (fromDeg + (toDeg - fromDeg) * interpolatedTime).toInt()
 
-        val matrix = transform!!.matrix
+        val matrix = transform.matrix
         camera.save()
         if (rotationAxis and ROTATION_X == ROTATION_X) {
             camera.rotateX(targetDeg.toFloat())

@@ -11,9 +11,9 @@ import com.juniperphoton.flipperviewlib.animation.MtxRotationAnimation
 import kotlin.properties.Delegates
 
 @Suppress("unused")
-class FlipperView(ctx: Context, attrs: AttributeSet) : FrameLayout(ctx, attrs), View.OnClickListener {
+class FlipperView(ctx: Context, attrs: AttributeSet) : FrameLayout(ctx, attrs) {
     companion object {
-        val DEFAULT_DURATION = 200
+        const val DEFAULT_DURATION = 200
         const val FLIP_DIRECTION_BACK_TO_FRONT = 0
         const val FLIP_DIRECTION_FRONT_TO_BACK = 1
         const val AXIS_X = 0
@@ -34,7 +34,7 @@ class FlipperView(ctx: Context, attrs: AttributeSet) : FrameLayout(ctx, attrs), 
      * Display index. Use this or next() or previous() or next(nextIndex: Int) to control the display
      * PLEASE be aware of out of bound exception
      */
-    var displayIndex: Int by Delegates.observable(0) { property, old, new ->
+    var displayIndex: Int by Delegates.observable(0) { _, old, new ->
         if (!prepared) {
             return@observable
         }
@@ -77,7 +77,9 @@ class FlipperView(ctx: Context, attrs: AttributeSet) : FrameLayout(ctx, attrs), 
         typedArray.recycle()
 
         clipChildren = false
-        setOnClickListener(this)
+        setOnClickListener {
+            next()
+        }
     }
 
     private fun prepare() {
@@ -96,7 +98,9 @@ class FlipperView(ctx: Context, attrs: AttributeSet) : FrameLayout(ctx, attrs), 
         if (!prepared) {
             prepare()
         }
+
         if (animating) return
+
         var nextIndex = displayIndex + 1
         nextIndex = checkIndex(nextIndex)
         displayIndex = nextIndex
@@ -106,7 +110,9 @@ class FlipperView(ctx: Context, attrs: AttributeSet) : FrameLayout(ctx, attrs), 
         if (!prepared) {
             prepare()
         }
+
         if (animating) return
+
         var prevIndex = displayIndex - 1
         prevIndex = checkIndex(prevIndex)
         displayIndex = prevIndex
@@ -133,6 +139,7 @@ class FlipperView(ctx: Context, attrs: AttributeSet) : FrameLayout(ctx, attrs), 
                 0,
                 if (flipDirection == FLIP_DIRECTION_BACK_TO_FRONT) -90 else 90,
                 duration.toLong())
+
         leftAnimation.setAnimationListener(object : AnimationEnd() {
             override fun onAnimationEnd(animation: Animation?) {
                 displayView.visibility = View.INVISIBLE
@@ -140,6 +147,7 @@ class FlipperView(ctx: Context, attrs: AttributeSet) : FrameLayout(ctx, attrs), 
                 nextView.startAnimation(enterAnimation)
             }
         })
+
         animating = true
         displayView.startAnimation(leftAnimation)
     }
@@ -165,9 +173,5 @@ class FlipperView(ctx: Context, attrs: AttributeSet) : FrameLayout(ctx, attrs), 
     override fun onFinishInflate() {
         super.onFinishInflate()
         prepare()
-    }
-
-    override fun onClick(v: View?) {
-        next()
     }
 }
