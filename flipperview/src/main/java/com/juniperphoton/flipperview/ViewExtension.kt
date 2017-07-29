@@ -1,7 +1,7 @@
-package com.juniperphoton.flipperviewlib
+package com.juniperphoton.flipperview
 
 import android.view.View
-import com.juniperphoton.flipperviewlib.animation.MtxRotationAnimation
+import com.juniperphoton.flipperview.animation.MtxRotationAnimation
 
 /**
  * Extension method to rotate a view perspectively.
