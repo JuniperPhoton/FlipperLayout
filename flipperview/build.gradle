@@ -16,7 +16,7 @@ ext {
     siteUrl = 'https://github.com/JuniperPhoton/FlipperView'
     gitUrl = 'https://github.com/JuniperPhoton/FlipperView.git'
 
-    libraryVersion = '1.0.4'
+    libraryVersion = '1.1.0'
 
     developerId = 'juniperphoton'
     developerName = 'JuniperPhoton'
