@@ -10,7 +10,7 @@ import android.widget.Spinner
 import com.juniperphoton.flipperview.FlipperView
 
 class MainActivity : AppCompatActivity() {
-    private var flipperView: FlipperView? = null
+    private lateinit var flipperView: FlipperView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,24 +19,32 @@ class MainActivity : AppCompatActivity() {
         flipperView = findViewById(R.id.flipper_view) as FlipperView
         val prevView = findViewById(R.id.prev_btn)
         val nextView = findViewById(R.id.next_btn)
+        val resetView = findViewById(R.id.reset_btn)
 
-        prevView.setOnClickListener { flipperView!!.previous() }
-        nextView.setOnClickListener { flipperView!!.next() }
+        resetView.setOnClickListener {
+            flipperView.next(0, false)
+        }
+        prevView.setOnClickListener {
+            flipperView.previous()
+        }
+        nextView.setOnClickListener {
+            flipperView.next()
+        }
 
         (findViewById(R.id.spinner) as Spinner).onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                flipperView!!.displayIndex = position
+                flipperView.next(position)
             }
         }
 
-        (0..flipperView!!.childCount - 1)
-                .map { flipperView!!.getChildAt(it) }
+        (0..flipperView.childCount - 1)
+                .map { flipperView.getChildAt(it) }
                 .forEach {
                     it.setOnClickListener { v ->
-                        flipperView!!.next()
+                        flipperView.next()
                         Log.d("main", (v as Button).text.toString())
                     }
                 }

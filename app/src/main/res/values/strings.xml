@@ -7,6 +7,7 @@
     <string name="ok_that_s_a_stop_4">OK THAT\'S A STOP 4</string>
     <string name="prev">Previous</string>
     <string name="next">Next</string>
+    <string name="reset">RESET</string>
 
     <string-array name="entities">
         <item>0</item>
