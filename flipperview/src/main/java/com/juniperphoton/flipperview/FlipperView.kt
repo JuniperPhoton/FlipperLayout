@@ -1,4 +1,4 @@
-package com.juniperphoton.flipperviewlib
+package com.juniperphoton.flipperview
 
 import android.content.Context
 import android.util.AttributeSet
@@ -6,8 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.widget.FrameLayout
-import com.juniperphoton.flipperviewlib.animation.AnimationEnd
-import com.juniperphoton.flipperviewlib.animation.MtxRotationAnimation
+import com.juniperphoton.flipperviewlib.R
+import com.juniperphoton.flipperview.animation.AnimationEnd
+import com.juniperphoton.flipperview.animation.MtxRotationAnimation
 import kotlin.properties.Delegates
 
 @Suppress("unused")

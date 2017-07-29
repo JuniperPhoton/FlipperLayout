@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.Button
 import android.widget.Spinner
-import com.juniperphoton.flipperviewlib.FlipperView
+import com.juniperphoton.flipperview.FlipperView
 
 class MainActivity : AppCompatActivity() {
     private var flipperView: FlipperView? = null
