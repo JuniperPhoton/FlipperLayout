@@ -2,10 +2,16 @@ package com.juniperphoton.flipperview.animation
 
 import android.view.animation.Animation
 
-abstract class AnimationEnd : Animation.AnimationListener{
+/**
+ * Convenience class for Animation.AnimationListener.
+ */
+abstract class SimpleAnimationListener : Animation.AnimationListener {
     override fun onAnimationRepeat(animation: Animation?) {
     }
 
     override fun onAnimationStart(animation: Animation?) {
+    }
+
+    override fun onAnimationEnd(animation: Animation?) {
     }
 }

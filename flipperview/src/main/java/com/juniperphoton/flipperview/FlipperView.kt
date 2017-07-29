@@ -6,15 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.widget.FrameLayout
-import com.juniperphoton.flipperviewlib.R
-import com.juniperphoton.flipperview.animation.AnimationEnd
 import com.juniperphoton.flipperview.animation.MtxRotationAnimation
-import kotlin.properties.Delegates
+import com.juniperphoton.flipperview.animation.SimpleAnimationListener
+import com.juniperphoton.flipperviewlib.R
 
+/**
+ * A view to perform perspective rotation while changing different child views.
+ * You are allowed to configure its [flipDirection] and [flipAxis] and [duration] properties at runtime.
+ *
+ * Calling [next] or [prepare] to segue views.
+ *
+ */
 @Suppress("unused")
-class FlipperView(ctx: Context, attrs: AttributeSet) : FrameLayout(ctx, attrs) {
+class FlipperView(context: Context, attrs: AttributeSet) : FrameLayout(context, attrs) {
     companion object {
-        const val DEFAULT_DURATION = 200
+        const val DEFAULT_DURATION_MILLIS = 200L
         const val FLIP_DIRECTION_BACK_TO_FRONT = 0
         const val FLIP_DIRECTION_FRONT_TO_BACK = 1
         const val AXIS_X = 0
@@ -22,35 +28,22 @@ class FlipperView(ctx: Context, attrs: AttributeSet) : FrameLayout(ctx, attrs) {
     }
 
     /**
-     * Flip direction, either FLIP_DIRECTION_BACK_TO_FRONT or FLIP_DIRECTION_FRONT_TO_BACK
+     * Flip direction, either [FLIP_DIRECTION_BACK_TO_FRONT] or [FLIP_DIRECTION_FRONT_TO_BACK].
      */
     var flipDirection: Int = FLIP_DIRECTION_BACK_TO_FRONT
 
     /**
-     * Flip axis, either AXIS_X or AXIS_Y
+     * Flip axis, either [AXIS_X] or [AXIS_Y].
      */
-    var flipAxis = AXIS_X
+    var flipAxis: Int = AXIS_X
 
     /**
-     * Display index. Use this or next() or previous() or next(nextIndex: Int) to control the display
-     * PLEASE be aware of out of bound exception
+     * Animation duration, in millis. Default value is [DEFAULT_DURATION_MILLIS].
      */
-    var displayIndex: Int by Delegates.observable(0) { _, old, new ->
-        if (!prepared) {
-            return@observable
-        }
-        if (old != new) {
-            next(new)
-        }
-    }
+    var duration: Long = DEFAULT_DURATION_MILLIS
 
     /**
-     * Animation duration, in millis
-     */
-    var duration = DEFAULT_DURATION
-
-    /**
-     * All tap to flip
+     * Allow tapping to toggle flip or not.
      */
     var tapToFlip: Boolean = true
 
@@ -59,13 +52,13 @@ class FlipperView(ctx: Context, attrs: AttributeSet) : FrameLayout(ctx, attrs) {
     private var prepared: Boolean = false
     private var animating: Boolean = false
 
+    private var displayIndex: Int = 0
+
     private var mtxRotation: Int = 0
-        get() {
-            return when (flipAxis) {
-                AXIS_X -> MtxRotationAnimation.ROTATION_X
-                AXIS_Y -> MtxRotationAnimation.ROTATION_Y
-                else -> MtxRotationAnimation.ROTATION_X
-            }
+        get() = when (flipAxis) {
+            AXIS_X -> MtxRotationAnimation.ROTATION_X
+            AXIS_Y -> MtxRotationAnimation.ROTATION_Y
+            else -> MtxRotationAnimation.ROTATION_X
         }
 
     init {
@@ -73,7 +66,7 @@ class FlipperView(ctx: Context, attrs: AttributeSet) : FrameLayout(ctx, attrs) {
         displayIndex = typedArray.getInt(R.styleable.FlipperView_defaultIndex, 0)
         flipDirection = typedArray.getInt(R.styleable.FlipperView_flipDirection, FLIP_DIRECTION_BACK_TO_FRONT)
         flipAxis = typedArray.getInt(R.styleable.FlipperView_flipAxis, AXIS_X)
-        duration = typedArray.getInt(R.styleable.FlipperView_duration, DEFAULT_DURATION)
+        duration = typedArray.getInt(R.styleable.FlipperView_duration, DEFAULT_DURATION_MILLIS.toInt()).toLong()
         tapToFlip = typedArray.getBoolean(R.styleable.FlipperView_tapToFlip, false)
         typedArray.recycle()
 
@@ -95,6 +88,9 @@ class FlipperView(ctx: Context, attrs: AttributeSet) : FrameLayout(ctx, attrs) {
         prepared = true
     }
 
+    /**
+     * Segue to next view.
+     */
     fun next() {
         if (!prepared) {
             prepare()
@@ -102,11 +98,13 @@ class FlipperView(ctx: Context, attrs: AttributeSet) : FrameLayout(ctx, attrs) {
 
         if (animating) return
 
-        var nextIndex = displayIndex + 1
-        nextIndex = checkIndex(nextIndex)
-        displayIndex = nextIndex
+        val nextIndex = displayIndex + 1
+        next(checkIndex(nextIndex), true)
     }
 
+    /**
+     * Segue to previous view.
+     */
     fun previous() {
         if (!prepared) {
             prepare()
@@ -114,40 +112,49 @@ class FlipperView(ctx: Context, attrs: AttributeSet) : FrameLayout(ctx, attrs) {
 
         if (animating) return
 
-        var prevIndex = displayIndex - 1
-        prevIndex = checkIndex(prevIndex)
-        displayIndex = prevIndex
+        val nextIndex = displayIndex - 1
+        next(checkIndex(nextIndex), true)
     }
 
-    fun next(nextIndex: Int) {
+    /**
+     * Segue to view at [nextIndex]. Setting [animate] to false to disable animation.
+     */
+    fun next(nextIndex: Int, animate: Boolean = true) {
+        displayIndex = nextIndex
+
         val nextView = getChildAt(nextIndex)
-        val enterAnimation = MtxRotationAnimation(mtxRotation,
-                if (flipDirection == FLIP_DIRECTION_BACK_TO_FRONT) 90 else -90,
-                0, duration.toLong())
-        enterAnimation.setAnimationListener(object : AnimationEnd() {
-            override fun onAnimationStart(animation: Animation?) {
-                nextView.visibility = View.VISIBLE
-            }
+        if (!animate) {
+            displayView.visibility = View.INVISIBLE
+            nextView.visibility = View.VISIBLE
+            displayView = nextView
+            return
+        }
 
-            override fun onAnimationEnd(animation: Animation?) {
-                displayView = nextView
-                animating = false
-                nextView.clearAnimation()
-            }
-        })
+        val fromDeg = if (flipDirection == FLIP_DIRECTION_BACK_TO_FRONT) 90 else -90
+        val enterAnimation = MtxRotationAnimation(mtxRotation, fromDeg, 0, duration).apply {
+            setAnimationListener(object : SimpleAnimationListener() {
+                override fun onAnimationStart(animation: Animation?) {
+                    nextView.visibility = View.VISIBLE
+                }
 
-        val leftAnimation = MtxRotationAnimation(mtxRotation,
-                0,
-                if (flipDirection == FLIP_DIRECTION_BACK_TO_FRONT) -90 else 90,
-                duration.toLong())
+                override fun onAnimationEnd(animation: Animation?) {
+                    displayView = nextView
+                    animating = false
+                    nextView.clearAnimation()
+                }
+            })
+        }
 
-        leftAnimation.setAnimationListener(object : AnimationEnd() {
-            override fun onAnimationEnd(animation: Animation?) {
-                displayView.visibility = View.INVISIBLE
-                displayView.clearAnimation()
-                nextView.startAnimation(enterAnimation)
-            }
-        })
+        val toDeg = if (flipDirection == FLIP_DIRECTION_BACK_TO_FRONT) -90 else 90
+        val leftAnimation = MtxRotationAnimation(mtxRotation, 0, toDeg, duration).apply {
+            setAnimationListener(object : SimpleAnimationListener() {
+                override fun onAnimationEnd(animation: Animation?) {
+                    displayView.visibility = View.INVISIBLE
+                    displayView.clearAnimation()
+                    nextView.startAnimation(enterAnimation)
+                }
+            })
+        }
 
         animating = true
         displayView.startAnimation(leftAnimation)
@@ -164,7 +171,7 @@ class FlipperView(ctx: Context, attrs: AttributeSet) : FrameLayout(ctx, attrs) {
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val parent = parent
-        // **Must** call setClipToPadding & setClipChildren in this method or onLayout
+        // Must setting [clipToPadding] and [clipChildren] in this place or onLayout
         if (parent != null && parent is ViewGroup) {
             parent.clipToPadding = false
             parent.clipChildren = false

@@ -1,13 +1,17 @@
 package com.juniperphoton.flipperview.animation
 
 import android.graphics.Camera
-import android.view.View
 import android.view.animation.Animation
 import android.view.animation.Transformation
 
+/**
+ * A class that performs the transformation actually.
+ */
 class MtxRotationAnimation(private var rotationAxis: Int,
                            private var fromDeg: Int,
-                           private var toDeg: Int, duration: Long) : Animation() {
+                           private var toDeg: Int,
+                           duration: Long
+) : Animation() {
     companion object {
         const val ROTATION_X = 1
         const val ROTATION_Y = 1 shl 1
