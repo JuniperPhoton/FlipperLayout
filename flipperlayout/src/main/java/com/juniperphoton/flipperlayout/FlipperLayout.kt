@@ -1,4 +1,4 @@
-package com.juniperphoton.flipperview
+package com.juniperphoton.flipperlayout
 
 import android.content.Context
 import android.util.AttributeSet
@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.widget.FrameLayout
-import com.juniperphoton.flipperview.animation.MtxRotationAnimation
-import com.juniperphoton.flipperview.animation.SimpleAnimationListener
+import com.juniperphoton.flipperlayout.animation.MtxRotationAnimation
+import com.juniperphoton.flipperlayout.animation.SimpleAnimationListener
 import com.juniperphoton.flipperviewlib.R
 
 /**
@@ -18,7 +18,7 @@ import com.juniperphoton.flipperviewlib.R
  *
  */
 @Suppress("unused")
-class FlipperView(context: Context, attrs: AttributeSet) : FrameLayout(context, attrs) {
+class FlipperLayout(context: Context, attrs: AttributeSet) : FrameLayout(context, attrs) {
     companion object {
         const val DEFAULT_DURATION_MILLIS = 200L
         const val FLIP_DIRECTION_BACK_TO_FRONT = 0
@@ -62,12 +62,12 @@ class FlipperView(context: Context, attrs: AttributeSet) : FrameLayout(context, 
         }
 
     init {
-        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.FlipperView)
-        displayIndex = typedArray.getInt(R.styleable.FlipperView_defaultIndex, 0)
-        flipDirection = typedArray.getInt(R.styleable.FlipperView_flipDirection, FLIP_DIRECTION_BACK_TO_FRONT)
-        flipAxis = typedArray.getInt(R.styleable.FlipperView_flipAxis, AXIS_X)
-        duration = typedArray.getInt(R.styleable.FlipperView_duration, DEFAULT_DURATION_MILLIS.toInt()).toLong()
-        tapToFlip = typedArray.getBoolean(R.styleable.FlipperView_tapToFlip, false)
+        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.FlipperLayout)
+        displayIndex = typedArray.getInt(R.styleable.FlipperLayout_defaultIndex, 0)
+        flipDirection = typedArray.getInt(R.styleable.FlipperLayout_flipDirection, FLIP_DIRECTION_BACK_TO_FRONT)
+        flipAxis = typedArray.getInt(R.styleable.FlipperLayout_flipAxis, AXIS_X)
+        duration = typedArray.getInt(R.styleable.FlipperLayout_duration, DEFAULT_DURATION_MILLIS.toInt()).toLong()
+        tapToFlip = typedArray.getBoolean(R.styleable.FlipperLayout_tapToFlip, false)
         typedArray.recycle()
 
         clipChildren = false

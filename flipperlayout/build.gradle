@@ -4,19 +4,19 @@ apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
 ext {
-    bintrayRepo = 'JuniperPhoton'
-    bintrayName = 'flipperview'
+    bintrayRepo = 'maven'
+    bintrayName = 'flipperlayout'
 
     publishedGroupId = 'com.juniperphoton'
-    libraryName = 'flipperview'
-    artifact = 'flipperview'
+    libraryName = 'flipperlayout'
+    artifact = 'flipperlayout'
 
-    libraryDescription = 'A view that performs 3d rotate'
+    libraryDescription = 'A view that performs perspective rotatation.'
 
-    siteUrl = 'https://github.com/JuniperPhoton/FlipperView'
-    gitUrl = 'https://github.com/JuniperPhoton/FlipperView.git'
+    siteUrl = 'https://github.com/JuniperPhoton/FlipperLayout'
+    gitUrl = 'https://github.com/JuniperPhoton/FlipperLayout.git'
 
-    libraryVersion = '1.1.0'
+    libraryVersion = '1.1.1'
 
     developerId = 'juniperphoton'
     developerName = 'JuniperPhoton'

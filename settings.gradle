@@ -1,1 +1,1 @@
-include ':showcase', ':flipperview'
+include ':showcase', ':flipperlayout'

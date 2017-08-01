@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="FlipperView">
+    <declare-styleable name="FlipperLayout">
         <attr name="defaultIndex" format="integer"/>
         <attr name="flipDirection">
             <enum name="backToFront" value="0"/>

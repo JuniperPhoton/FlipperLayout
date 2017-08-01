@@ -1,4 +1,4 @@
-package com.juniperphoton.flipperview.animation
+package com.juniperphoton.flipperlayout.animation
 
 import android.graphics.Camera
 import android.view.animation.Animation
