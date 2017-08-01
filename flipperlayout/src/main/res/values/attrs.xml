@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="FlipperLayout">
+        <attr name="defaultIndex" format="integer"/>
+        <attr name="flipDirection">
+            <enum name="backToFront" value="0"/>
+            <enum name="frontToBack" value="1"/>
+        </attr>
+        <attr name="flipAxis">
+            <enum name="X" value="0"/>
+            <enum name="Y" value="1"/>
+        </attr>
+        <attr name="usePerspective" format="boolean"/>
+        <attr name="duration" format="integer"/>
+        <attr name="tapToFlip" format="boolean"/>
+    </declare-styleable>
+</resources>
