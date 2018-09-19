@@ -76,7 +76,7 @@ CODE: `AXIS_X` or `AXIS_Y`
 ## duration: Int
 Animation duration in millis. The default value is 200 which I think it's fast enough.
 
-##tapToFlip:boolean
+## tapToFlip:boolean
 Enable tap to flip or not. Default value is false.
 
 ## Way to segue views
