@@ -10,7 +10,7 @@ Works on API 19, but with more tests I think it works well on API 16.
 If you are building with Gradle, simply add the following line to the dependencies section of your app .gradle file:
 
 ```
-compile 'com.juniperphoton:flipperlayout:1.1.1'
+implementation 'com.juniperphoton:flipperlayout:1.2.1'
 ```
 
 # Usage
