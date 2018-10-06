@@ -16,10 +16,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        flipperLayout = findViewById(R.id.flipper_layout) as FlipperLayout
-        val prevView = findViewById(R.id.prev_btn)
-        val nextView = findViewById(R.id.next_btn)
-        val resetView = findViewById(R.id.reset_btn)
+        flipperLayout = findViewById(R.id.flipper_layout)
+        val prevView = findViewById<View>(R.id.prev_btn)
+        val nextView = findViewById<View>(R.id.next_btn)
+        val resetView = findViewById<View>(R.id.reset_btn)
 
         resetView.setOnClickListener {
             flipperLayout.next(0, false)
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
             flipperLayout.next()
         }
 
-        (findViewById(R.id.spinner) as Spinner).onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        (findViewById<Spinner>(R.id.spinner)).onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
 
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        (0..flipperLayout.childCount - 1)
+        (0 until flipperLayout.childCount)
                 .map { flipperLayout.getChildAt(it) }
                 .forEach {
                     it.setOnClickListener { v ->
