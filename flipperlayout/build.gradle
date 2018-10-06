@@ -16,7 +16,7 @@ ext {
     siteUrl = 'https://github.com/JuniperPhoton/FlipperLayout'
     gitUrl = 'https://github.com/JuniperPhoton/FlipperLayout.git'
 
-    libraryVersion = '1.1.1'
+    libraryVersion = '1.2.1'
 
     developerId = 'juniperphoton'
     developerName = 'JuniperPhoton'
@@ -60,3 +60,14 @@ dependencies {
 
 apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
 apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
+
+bintray {
+    def properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+    def userName = properties.getProperty("user")
+    def apiKey = properties.getProperty("apiKey")
+
+    user = userName
+    key = apiKey
+}
