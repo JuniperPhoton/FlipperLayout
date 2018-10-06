@@ -88,3 +88,10 @@ Current there are **3** ways to segue views:
 - previous();
 
 Please be aware of `IndexOutOfBoundsException` while calling `next(index:Int, animate: Boolean)`.
+
+# Upload
+
+First add `user` and `apiKey` properties in local.properties file.
+Then run the command below:
+
+> ./gradlew bintrayUpload
