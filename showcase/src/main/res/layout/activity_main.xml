@@ -1,23 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/activity_main"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin">
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/activity_vertical_margin">
 
     <com.juniperphoton.flipperlayout.FlipperLayout
         android:id="@+id/flipper_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:clickable="true"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:foreground="?android:attr/selectableItemBackground"
+        android:layout_gravity="center"
         app:defaultIndex="0"
         app:flipAxis="X"
         app:flipDirection="backToFront"
@@ -28,6 +22,7 @@
             android:layout_height="50dp"
             android:background="@color/exampleColor1"
             android:gravity="center"
+            android:stateListAnimator="@null"
             android:text="@string/tap_me_0"
             android:textColor="@android:color/white"
             android:textStyle="bold"/>
@@ -37,6 +32,7 @@
             android:layout_height="50dp"
             android:background="@color/exampleColor2"
             android:gravity="center"
+            android:stateListAnimator="@null"
             android:text="@string/keep_tapping_1"
             android:textColor="@android:color/white"
             android:textStyle="bold"/>
@@ -46,6 +42,7 @@
             android:layout_height="50dp"
             android:background="@color/exampleColor3"
             android:gravity="center"
+            android:stateListAnimator="@null"
             android:text="@string/tap_me_please_2"
             android:textColor="@android:color/white"
             android:textStyle="bold"/>
@@ -55,6 +52,7 @@
             android:layout_height="50dp"
             android:background="@color/exampleColor4"
             android:gravity="center"
+            android:stateListAnimator="@null"
             android:text="@string/don_t_stop_3"
             android:textColor="@android:color/white"
             android:textStyle="bold"/>
@@ -64,6 +62,7 @@
             android:layout_height="50dp"
             android:background="@color/exampleColor5"
             android:gravity="center"
+            android:stateListAnimator="@null"
             android:text="@string/ok_that_s_a_stop_4"
             android:textColor="@android:color/white"
             android:textStyle="bold"/>
@@ -72,8 +71,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
+        android:layout_gravity="bottom"
         android:orientation="horizontal">
 
         <Button
@@ -101,4 +99,4 @@
             android:layout_gravity="center"
             android:entries="@array/entities"/>
     </LinearLayout>
-</RelativeLayout>
+</FrameLayout>

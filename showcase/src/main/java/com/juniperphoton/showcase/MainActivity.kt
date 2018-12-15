@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.Button
 import android.widget.Spinner
+import android.widget.TextView
 import com.juniperphoton.flipperlayout.FlipperLayout
 
 class MainActivity : AppCompatActivity() {
@@ -31,9 +32,8 @@ class MainActivity : AppCompatActivity() {
             flipperLayout.next()
         }
 
-        (findViewById<Spinner>(R.id.spinner)).onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
+        findViewById<Spinner>(R.id.spinner).onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) = Unit
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 flipperLayout.next(position)
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
                 .forEach {
                     it.setOnClickListener { v ->
                         flipperLayout.next()
-                        Log.d("main", (v as Button).text.toString())
+                        Log.d("main", (v as TextView).text.toString())
                     }
                 }
     }
