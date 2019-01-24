@@ -61,6 +61,7 @@ dependencies {
 apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
 apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
 
+// To upload archives: ./gradlew clean bintrayUpload
 bintray {
     def properties = new Properties()
     properties.load(project.rootProject.file('local.properties').newDataInputStream())
