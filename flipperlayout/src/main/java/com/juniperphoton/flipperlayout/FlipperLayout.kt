@@ -70,6 +70,7 @@ class FlipperLayout(context: Context, attrs: AttributeSet) : FrameLayout(context
         tapToFlip = typedArray.getBoolean(R.styleable.FlipperLayout_tapToFlip, false)
         typedArray.recycle()
 
+        clipToPadding = false
         clipChildren = false
         setOnClickListener {
             next()
@@ -78,7 +79,7 @@ class FlipperLayout(context: Context, attrs: AttributeSet) : FrameLayout(context
 
     private fun prepare() {
         val children = arrayListOf<View>()
-        for (i in 0..childCount - 1) {
+        for (i in 0 until childCount) {
             children.add(getChildAt(i))
             getChildAt(i).visibility = View.INVISIBLE
         }
@@ -172,7 +173,7 @@ class FlipperLayout(context: Context, attrs: AttributeSet) : FrameLayout(context
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val parent = parent
         // Must setting [clipToPadding] and [clipChildren] in this place or onLayout
-        if (parent != null && parent is ViewGroup) {
+        if (parent is ViewGroup) {
             parent.clipToPadding = false
             parent.clipChildren = false
         }
