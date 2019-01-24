@@ -49,12 +49,18 @@ class FlipperLayout(context: Context, attrs: AttributeSet) : FrameLayout(context
      */
     var tapToFlip: Boolean = true
 
+    /**
+     * Get the current display index.
+     *
+     * To set this value, use [next] and its overload methods.
+     */
+    var displayIndex: Int = 0
+        private set
+
     private lateinit var displayView: View
 
     private var prepared: Boolean = false
     private var animating: Boolean = false
-
-    private var displayIndex: Int = 0
 
     private var mtxRotation: Int = 0
         get() = when (flipAxis) {
