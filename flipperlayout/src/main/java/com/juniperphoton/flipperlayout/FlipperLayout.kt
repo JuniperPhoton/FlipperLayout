@@ -10,6 +10,8 @@ import com.juniperphoton.flipperlayout.animation.MtxRotationAnimation
 import com.juniperphoton.flipperlayout.animation.SimpleAnimationListener
 import com.juniperphoton.flipperviewlib.R
 
+typealias RefreshBlock = ((View) -> Unit)
+
 /**
  * A view to perform perspective rotation while changing different child views.
  * You are allowed to configure its [flipDirection] and [flipAxis] and [duration] properties at runtime.
@@ -72,8 +74,11 @@ class FlipperLayout(context: Context, attrs: AttributeSet) : FrameLayout(context
 
         clipToPadding = false
         clipChildren = false
-        setOnClickListener {
-            next()
+
+        if (tapToFlip) {
+            setOnClickListener {
+                next()
+            }
         }
     }
 
@@ -100,7 +105,9 @@ class FlipperLayout(context: Context, attrs: AttributeSet) : FrameLayout(context
         if (animating) return
 
         val nextIndex = displayIndex + 1
-        next(checkIndex(nextIndex), true)
+        next(checkIndex(nextIndex), true) {
+            displayView.visibility = View.INVISIBLE
+        }
     }
 
     /**
@@ -114,18 +121,32 @@ class FlipperLayout(context: Context, attrs: AttributeSet) : FrameLayout(context
         if (animating) return
 
         val nextIndex = displayIndex - 1
-        next(checkIndex(nextIndex), true)
+        next(checkIndex(nextIndex), true) {
+            displayView.visibility = View.INVISIBLE
+        }
+    }
+
+    /**
+     * Perform the flipping animation and update the view by [refreshBlock] on animation end.
+     *
+     * NOTE: don't do heavy things in [refreshBlock] to block UI.
+     */
+    fun refreshCurrent(refreshBlock: RefreshBlock) {
+        next(displayIndex, true, refreshBlock)
     }
 
     /**
      * Segue to view at [nextIndex]. Setting [animate] to false to disable animation.
+     * Use [refreshBlock] to update [displayView]'s UI on animation end.
+     *
+     * NOTE: don't do heavy things in [refreshBlock] to block UI.
      */
-    fun next(nextIndex: Int, animate: Boolean = true) {
+    fun next(nextIndex: Int, animate: Boolean = true, refreshBlock: RefreshBlock? = null) {
         displayIndex = nextIndex
 
         val nextView = getChildAt(nextIndex)
         if (!animate) {
-            displayView.visibility = View.INVISIBLE
+            refreshBlock?.invoke(displayView)
             nextView.visibility = View.VISIBLE
             displayView = nextView
             return
@@ -150,7 +171,7 @@ class FlipperLayout(context: Context, attrs: AttributeSet) : FrameLayout(context
         val leftAnimation = MtxRotationAnimation(mtxRotation, 0, toDeg, duration).apply {
             setAnimationListener(object : SimpleAnimationListener() {
                 override fun onAnimationEnd(animation: Animation?) {
-                    displayView.visibility = View.INVISIBLE
+                    refreshBlock?.invoke(displayView)
                     displayView.clearAnimation()
                     nextView.startAnimation(enterAnimation)
                 }
@@ -159,6 +180,11 @@ class FlipperLayout(context: Context, attrs: AttributeSet) : FrameLayout(context
 
         animating = true
         displayView.startAnimation(leftAnimation)
+    }
+
+    @Throws(IndexOutOfBoundsException::class)
+    fun <T> getCurrentView(): T {
+        return getChildAt(displayIndex) as T
     }
 
     private fun checkIndex(nextOrPrevIndex: Int): Int {

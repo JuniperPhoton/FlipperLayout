@@ -8,6 +8,7 @@
     <string name="prev">Previous</string>
     <string name="next">Next</string>
     <string name="reset">RESET</string>
+    <string name="refresh_current">Refresh current</string>
 
     <string-array name="entities">
         <item>0</item>
