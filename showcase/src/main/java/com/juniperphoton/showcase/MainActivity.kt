@@ -12,6 +12,8 @@ import com.juniperphoton.flipperlayout.FlipperLayout
 class MainActivity : AppCompatActivity() {
     private lateinit var flipperLayout: FlipperLayout
 
+    private var currentRefreshIndex = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -20,6 +22,7 @@ class MainActivity : AppCompatActivity() {
         val prevView = findViewById<View>(R.id.prev_btn)
         val nextView = findViewById<View>(R.id.next_btn)
         val resetView = findViewById<View>(R.id.reset_btn)
+        val refresh = findViewById<View>(R.id.refresh_btn)
 
         resetView.setOnClickListener {
             flipperLayout.next(0, false)
@@ -29,6 +32,12 @@ class MainActivity : AppCompatActivity() {
         }
         nextView.setOnClickListener {
             flipperLayout.next()
+        }
+        refresh.setOnClickListener {
+            flipperLayout.refreshCurrent {
+                val child: TextView = flipperLayout.getCurrentView()
+                child.text = "refresh index: ${++currentRefreshIndex}"
+            }
         }
 
         findViewById<Spinner>(R.id.spinner).onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
