@@ -46,25 +46,35 @@
 
         <Button
             android:id="@+id/reset_btn"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/reset"/>
 
         <Button
             android:id="@+id/prev_btn"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/prev"/>
 
         <Button
             android:id="@+id/next_btn"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/next"/>
+
+        <Button
+            android:id="@+id/refresh_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/refresh_current"/>
 
         <Spinner
             android:id="@+id/spinner"
-            android:layout_width="100dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:entries="@array/entities"/>
