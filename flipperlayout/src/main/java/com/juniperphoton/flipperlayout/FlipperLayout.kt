@@ -188,6 +188,7 @@ class FlipperLayout(context: Context, attrs: AttributeSet) : FrameLayout(context
         displayView.startAnimation(leftAnimation)
     }
 
+    @Suppress("UNCHECKED_CAST")
     @Throws(IndexOutOfBoundsException::class)
     fun <T> getCurrentView(): T {
         return getChildAt(displayIndex) as T
