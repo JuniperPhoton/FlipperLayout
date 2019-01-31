@@ -14,7 +14,7 @@ mapOf(
         "libraryDescription" to "A view that performs perspective rotatation.",
         "siteUrl" to "https://github.com/JuniperPhoton/FlipperLayout",
         "gitUrl" to "https://github.com/JuniperPhoton/FlipperLayout.git",
-        "libraryVersion" to "1.2.5",
+        "libraryVersion" to "1.2.6",
         "developerId" to "juniperphoton",
         "developerName" to "JuniperPhoton",
         "developerEmail" to "dengweichao@hotmail.com",
