@@ -32,8 +32,12 @@ class MainActivity : AppCompatActivity() {
             flipperLayout.previous()
         }
         nextView.setOnClickListener {
+            var next = flipperLayout.displayIndex + 1
+            if (next >= flipperLayout.childCount) {
+                next = 0
+            }
             flipperLayout.next(
-                    nextIndex = flipperLayout.displayIndex + 1,
+                    nextIndex = next,
                     animate = true,
                     endBlock = {
                         Toast.makeText(this, "Next", Toast.LENGTH_SHORT).show()
@@ -50,7 +54,9 @@ class MainActivity : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>?) = Unit
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                flipperLayout.next(position)
+                if (flipperLayout.displayIndex != position) {
+                    flipperLayout.next(position)
+                }
             }
         }
 
