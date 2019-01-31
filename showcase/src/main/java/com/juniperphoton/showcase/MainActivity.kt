@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.juniperphoton.flipperlayout.FlipperLayout
 
@@ -31,7 +32,12 @@ class MainActivity : AppCompatActivity() {
             flipperLayout.previous()
         }
         nextView.setOnClickListener {
-            flipperLayout.next()
+            flipperLayout.next(
+                    nextIndex = flipperLayout.displayIndex + 1,
+                    animate = true,
+                    endBlock = {
+                        Toast.makeText(this, "Next", Toast.LENGTH_SHORT).show()
+                    })
         }
         refresh.setOnClickListener {
             flipperLayout.refreshCurrent {

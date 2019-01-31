@@ -10,7 +10,7 @@ import com.juniperphoton.flipperlayout.animation.MtxRotationAnimation
 import com.juniperphoton.flipperlayout.animation.SimpleAnimationListener
 import com.juniperphoton.flipperviewlib.R
 
-typealias RefreshBlock = ((View) -> Unit)
+typealias ViewAction = ((View) -> Unit)
 
 /**
  * A view to perform perspective rotation while changing different child views.
@@ -62,6 +62,12 @@ class FlipperLayout(context: Context, attrs: AttributeSet) : FrameLayout(context
     private var prepared: Boolean = false
     private var animating: Boolean = false
 
+    private val defaultRefreshAction = object : ViewAction {
+        override fun invoke(v: View) {
+            v.visibility = View.INVISIBLE
+        }
+    }
+
     private var mtxRotation: Int = 0
         get() = when (flipAxis) {
             AXIS_X -> MtxRotationAnimation.ROTATION_X
@@ -111,9 +117,7 @@ class FlipperLayout(context: Context, attrs: AttributeSet) : FrameLayout(context
         if (animating) return
 
         val nextIndex = displayIndex + 1
-        next(checkIndex(nextIndex), true) {
-            displayView.visibility = View.INVISIBLE
-        }
+        next(checkIndex(nextIndex), true, defaultRefreshAction)
     }
 
     /**
@@ -127,9 +131,7 @@ class FlipperLayout(context: Context, attrs: AttributeSet) : FrameLayout(context
         if (animating) return
 
         val nextIndex = displayIndex - 1
-        next(checkIndex(nextIndex), true) {
-            displayView.visibility = View.INVISIBLE
-        }
+        next(checkIndex(nextIndex), true, defaultRefreshAction)
     }
 
     /**
@@ -137,22 +139,26 @@ class FlipperLayout(context: Context, attrs: AttributeSet) : FrameLayout(context
      *
      * NOTE: don't do heavy things in [refreshBlock] to block UI.
      */
-    fun refreshCurrent(refreshBlock: RefreshBlock) {
+    fun refreshCurrent(refreshBlock: ViewAction) {
         next(displayIndex, true, refreshBlock)
     }
 
     /**
      * Segue to view at [nextIndex]. Setting [animate] to false to disable animation.
-     * Use [refreshBlock] to update [displayView]'s UI on animation end.
+     * Use [refreshBlock] to update [displayView]'s UI on enter animation end.
+     * Use [endBlock] to perform custom action on the exit animation end.
      *
      * NOTE: don't do heavy things in [refreshBlock] to block UI.
      */
-    fun next(nextIndex: Int, animate: Boolean = true, refreshBlock: RefreshBlock? = null) {
+    fun next(nextIndex: Int,
+             animate: Boolean = true,
+             refreshBlock: ViewAction = defaultRefreshAction,
+             endBlock: ViewAction? = null) {
         displayIndex = nextIndex
 
         val nextView = getChildAt(nextIndex)
         if (!animate) {
-            refreshBlock?.invoke(displayView)
+            refreshBlock.invoke(displayView)
             nextView.visibility = View.VISIBLE
             displayView = nextView
             return
@@ -169,15 +175,16 @@ class FlipperLayout(context: Context, attrs: AttributeSet) : FrameLayout(context
                     displayView = nextView
                     animating = false
                     nextView.clearAnimation()
+                    endBlock?.invoke(displayView)
                 }
             })
         }
 
         val toDeg = if (flipDirection == FLIP_DIRECTION_BACK_TO_FRONT) -90 else 90
-        val leftAnimation = MtxRotationAnimation(mtxRotation, 0, toDeg, duration).apply {
+        val exitAnimation = MtxRotationAnimation(mtxRotation, 0, toDeg, duration).apply {
             setAnimationListener(object : SimpleAnimationListener() {
                 override fun onAnimationEnd(animation: Animation?) {
-                    refreshBlock?.invoke(displayView)
+                    refreshBlock.invoke(displayView)
                     displayView.clearAnimation()
                     nextView.startAnimation(enterAnimation)
                 }
@@ -185,7 +192,7 @@ class FlipperLayout(context: Context, attrs: AttributeSet) : FrameLayout(context
         }
 
         animating = true
-        displayView.startAnimation(leftAnimation)
+        displayView.startAnimation(exitAnimation)
     }
 
     @Suppress("UNCHECKED_CAST")
