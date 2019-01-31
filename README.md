@@ -20,8 +20,7 @@ FlipperView extends from `FrameLayout` so you can use it as a `FrameLayout` but 
         android:foreground="?android:attr/selectableItemBackground"
         android:padding="20dp"
         app:defaultIndex="0"
-        app:flipAxis="X"
-        >
+        app:flipAxis="X">
     
         <TextView
             android:layout_width="200dp"
@@ -74,15 +73,43 @@ Animation duration in millis. The default value is 200 which I think it's fast e
 ##tapToFlip:boolean
 Enable tap to flip or not. Default value is false.
 
-## Way to control the display of views
+## Switch views
 
 Current there are **4** ways to switch views:
 
-- next();
-- next(int index);
-- previous();
-- displayIndex  <in Kotlin> & setDisplayIndex(int index) <in Java>;
+#### fun next()
 
-Note that the **displayIndex** is exposed as a property in `Kotlin` and set it value directly will do the animation itself.
+Segue to next view. If it's the end of the views, then segue to the first one.
+
+#### fun previous()
+
+Segue to the previous view. If it's the head of the views, then segue to the last one.
+
+### fun next(Int, Boolean, ViewAction, ViewAction?)
+
+Segue to the specified one with/without animation, and custom the action that  will be applied on the current display view on **Exit animation** end and run the action after the **Enter animation**.
+
+To understand the running time on both actions, please refer to the **advance** topic.
+
+Note that both `ViewAction` has default value for Kotlin.
 
 Please be aware of *IndexOutOfBoundsException*.
+
+### fun refreshCurrent(ViewAction)
+
+Perform the flip animation and run the custom action on exit animation end.
+
+## Advance
+
+The flipping animation contains two parts:
+
+1. Exit animation: the current display view rotates from 0 to 90 degrees
+2. Enter animation: the next display view rotates from -90 to 0 degrees
+
+At the end of both animations, you can perform your actions. See `fun next(Int, Boolean, ViewAction, ViewAction?)` method for details.
+
+## Note for Android P user
+
+Since the elevation shadow in Android P is NOT control by animation transformation, thus it will cause some weird issues on Android P devices.
+
+Thus the FlipperLayout will disable elevation during animation and apply it back for you at the end of animation.
