@@ -17,23 +17,23 @@
         app:flipDirection="backToFront"
         app:tapToFlip="false">
 
-        <TextView
+        <Button
             style="@style/btn"
             android:text="@string/tap_me_0"/>
 
-        <TextView
+        <Button
             style="@style/btn"
             android:text="@string/keep_tapping_1"/>
 
-        <TextView
+        <Button
             style="@style/btn"
             android:text="@string/tap_me_please_2"/>
 
-        <TextView
+        <Button
             style="@style/btn"
             android:text="@string/don_t_stop_3"/>
 
-        <TextView
+        <Button
             style="@style/btn"
             android:text="@string/ok_that_s_a_stop_4"/>
     </com.juniperphoton.flipperlayout.FlipperLayout>

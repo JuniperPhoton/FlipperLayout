@@ -1,6 +1,7 @@
 package com.juniperphoton.flipperlayout
 
 import android.content.Context
+import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
@@ -154,9 +155,19 @@ class FlipperLayout(context: Context, attrs: AttributeSet) : FrameLayout(context
              animate: Boolean = true,
              refreshBlock: ViewAction = defaultRefreshAction,
              endBlock: ViewAction? = null) {
+        if (animating) {
+            return
+        }
+
         displayIndex = nextIndex
 
         val nextView = getChildAt(nextIndex)
+
+        if (shouldResetElevationDuringAnimation()) {
+            ElevationHelper.save(nextView)
+            ElevationHelper.save(displayView)
+        }
+
         if (!animate) {
             refreshBlock.invoke(displayView)
             nextView.visibility = View.VISIBLE
@@ -172,6 +183,12 @@ class FlipperLayout(context: Context, attrs: AttributeSet) : FrameLayout(context
                 }
 
                 override fun onAnimationEnd(animation: Animation?) {
+                    if (shouldResetElevationDuringAnimation()) {
+                        ElevationHelper.restore(nextView)
+                        ElevationHelper.restore(displayView)
+                        ElevationHelper.clear()
+                    }
+
                     displayView = nextView
                     animating = false
                     nextView.clearAnimation()
@@ -199,6 +216,14 @@ class FlipperLayout(context: Context, attrs: AttributeSet) : FrameLayout(context
     @Throws(IndexOutOfBoundsException::class)
     fun <T> getCurrentView(): T {
         return getChildAt(displayIndex) as T
+    }
+
+    /**
+     * For Android P, the shadow is drawn by hardware layer and is not manipulated
+     * by matrix in Animation, thus we disable the elevation during animation.
+     */
+    private fun shouldResetElevationDuringAnimation(): Boolean {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
     }
 
     private fun checkIndex(nextOrPrevIndex: Int): Int {
