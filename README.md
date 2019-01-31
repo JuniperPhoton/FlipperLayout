@@ -6,7 +6,7 @@ Works on API 19, but with more tests I think it works well on API 16.
 
 ![](https://github.com/JuniperPhoton/FlipperControl/blob/master/demo.gif)
 
-##How to use
+## How to use
 
 FlipperView extends from `FrameLayout` so you can use it as a `FrameLayout` but it only displays one child at a time and you can call `next()` to switch to another child. Please don't put views that do **heavy** work.
 
@@ -51,26 +51,26 @@ It has a sample proj to demonstrate how to use it.
 
 There are a few attrs that control the behavior:
 
-##defaultIndex:int
+## defaultIndex:int
 Default display index of view. Note that the value of zero points to the first view you declare in XML.
 
-##flipDirection:int
+## flipDirection:int
 FlipDirection. 
 
 XML : `backToFront` or `frontToBack`
 
 CODE: `FLIP_DIRECTION_BACK_TO_FRONT` or `FLIP_DIRECTION_FRONT_TO_BACK`
 
-##flipAxis:int
+## flipAxis:int
 
 XML : `X` or `Y`
 
 CODE: `AXIS_X` or `AXIS_Y`
 
-##duration:int
+## duration:int
 Animation duration in millis. The default value is 200 which I think it's fast enough.
 
-##tapToFlip:boolean
+## tapToFlip:boolean
 Enable tap to flip or not. Default value is false.
 
 ## Switch views
