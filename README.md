@@ -1,22 +1,16 @@
 # FlipperView
-Android version of [FlipperControl for UWP](https://github.com/JuniperPhoton/FlipperControl) . Now it's re-written in Kotlin.
+Android version of [FlipperControl for UWP](https://github.com/JuniperPhoton/FlipperControl) . Now it's written in Kotlin.
 
 A control that uses flip transition to change different states.
 Works on API 19, but with more tests I think it works well on API 16.
 
 ![](https://github.com/JuniperPhoton/FlipperControl/blob/master/demo.gif)
 
-# Using FlipperView in your application
-If you are building with Gradle, simply add the following line to the dependencies section of your app .gradle file:
+##How to use
 
-```
-implementation 'com.juniperphoton:flipperlayout:1.2.1'
-```
+FlipperView extends from `FrameLayout` so you can use it as a `FrameLayout` but it only displays one child at a time and you can call `next()` to switch to another child. Please don't put views that do **heavy** work.
 
-# Usage
-FlipperView extends from `FrameLayout` so you can use it as a normal`FrameLayout`. However it only displays one child at a time and you can call `next()` or `previous()` to segue to another child. Please don't put views that do **heavy** work.
-
-    <com.juniperphoton.flipperview.FlipperView
+    <com.juniperphoton.flipperviewlib.FlipperView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -51,47 +45,71 @@ FlipperView extends from `FrameLayout` so you can use it as a normal`FrameLayout
             android:gravity="center"
             android:text="TAP ME PLEASE"
             android:textColor="@android:color/white"/>
-    </com.juniperphoton.flipperview.FlipperView>
+    </com.juniperphoton.flipperviewlib.FlipperView>
 
-It has a sample project to demonstrate how to use it.
+It has a sample proj to demonstrate how to use it.
 
-There are a few properties that you can configure.
+There are a few attrs that control the behavior:
 
-## defaultIndex: Int
+##defaultIndex:int
 Default display index of view. Note that the value of zero points to the first view you declare in XML.
 
-## flipDirection: Int
-Flip direction. 
+##flipDirection:int
+FlipDirection. 
 
 XML : `backToFront` or `frontToBack`
 
 CODE: `FLIP_DIRECTION_BACK_TO_FRONT` or `FLIP_DIRECTION_FRONT_TO_BACK`
 
-## flipAxis: Int
+##flipAxis:int
 
 XML : `X` or `Y`
 
 CODE: `AXIS_X` or `AXIS_Y`
 
-## duration: Int
+##duration:int
 Animation duration in millis. The default value is 200 which I think it's fast enough.
 
-## tapToFlip:boolean
+##tapToFlip:boolean
 Enable tap to flip or not. Default value is false.
 
-## Way to segue views
+## Switch views
 
-Current there are **3** ways to segue views:
+Current there are **4** ways to switch views:
 
-- next();
-- next(index:Int, animate: Boolean);
-- previous();
+#### fun next()
 
-Please be aware of `IndexOutOfBoundsException` while calling `next(index:Int, animate: Boolean)`.
+Segue to next view. If it's the end of the views, then segue to the first one.
 
-# Upload
+#### fun previous()
 
-First add `user` and `apiKey` properties in local.properties file.
-Then run the command below:
+Segue to the previous view. If it's the head of the views, then segue to the last one.
 
-> ./gradlew bintrayUpload
+### fun next(Int, Boolean, ViewAction, ViewAction?)
+
+Segue to the specified one with/without animation, and custom the action that  will be applied on the current display view on **Exit animation** end and run the action after the **Enter animation**.
+
+To understand the running time on both actions, please refer to the **advance** topic.
+
+Note that both `ViewAction` has default value for Kotlin.
+
+Please be aware of *IndexOutOfBoundsException*.
+
+### fun refreshCurrent(ViewAction)
+
+Perform the flip animation and run the custom action on exit animation end.
+
+## Advance
+
+The flipping animation contains two parts:
+
+1. Exit animation: the current display view rotates from 0 to 90 degrees
+2. Enter animation: the next display view rotates from -90 to 0 degrees
+
+At the end of both animations, you can perform your actions. See `fun next(Int, Boolean, ViewAction, ViewAction?)` method for details.
+
+## Note for Android P user
+
+Since the elevation shadow in Android P is NOT control by animation transformation, thus it will cause some weird issues on Android P devices.
+
+Thus the FlipperLayout will disable elevation during animation and apply it back for you at the end of animation.
