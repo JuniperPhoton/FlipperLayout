@@ -1,5 +1,5 @@
 mapOf(
-        "kotlinVersion" to "1.3.20",
+        "kotlinVersion" to "1.5.21",
         "supportVersion" to "28.0.0",
         "compileVersion" to 28,
         "minVersion" to 19,

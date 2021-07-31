@@ -25,6 +25,9 @@ class MainActivity : AppCompatActivity() {
         val resetView = findViewById<View>(R.id.reset_btn)
         val refresh = findViewById<View>(R.id.refresh_btn)
 
+        val v = BuildConfig.VERSION_CODE
+        val name = BuildConfig.VERSION_NAME
+
         resetView.setOnClickListener {
             flipperLayout.next(0, false)
         }

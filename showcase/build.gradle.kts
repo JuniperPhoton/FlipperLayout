@@ -14,13 +14,13 @@ val kotlinVersion: String by extra
 val appcompatVersion: String by extra
 
 android {
-    compileSdkVersion(compileVersion)
+    compileSdk = compileVersion
     defaultConfig {
         applicationId = "com.juniperphoton.showcase"
-        minSdkVersion(minVersion)
-        targetSdkVersion(targetVersion)
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = minVersion
+        targetSdk = targetVersion
+        versionCode = 2
+        versionName = "1.0.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

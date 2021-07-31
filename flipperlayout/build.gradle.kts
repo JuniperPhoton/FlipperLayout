@@ -4,8 +4,7 @@ apply(from = "../source.gradle.kts")
 plugins {
     id("com.android.library")
     kotlin("android")
-    id("com.github.dcendents.android-maven")
-    id("com.jfrog.bintray")
+    `maven-publish`
 }
 
 val compileVersion: Int by extra
@@ -15,16 +14,16 @@ val buildVersion: String by extra
 val kotlinVersion: String by extra
 val appcompatVersion: String by extra
 val libraryVersion: String by extra
+val publishedGroupId: String by extra
+val libraryName: String by extra
 
 android {
-    compileSdkVersion(compileVersion)
+    compileSdk = compileVersion
     buildToolsVersion = buildVersion
 
     defaultConfig {
-        minSdkVersion(minVersion)
-        targetSdkVersion(targetVersion)
-        versionCode = 1
-        versionName = libraryVersion
+        minSdk = minVersion
+        targetSdk = targetVersion
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -51,19 +50,4 @@ dependencies {
 // Disable javadoc
 tasks.withType(Javadoc::class.java) {
     enabled = false
-}
-
-apply(from = "https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle")
-apply(from = "https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle")
-
-// To upload archives: ./gradlew clean bintrayUpload
-bintray {
-    val userName: String? by project
-    val apiKey: String? by project
-
-    user = userName
-    key = apiKey
-
-    // Other necessary properties are defined in source.gradle.kts
-    // and assigned in the scripts applied above.
 }

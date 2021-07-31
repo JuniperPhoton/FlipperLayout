@@ -5,16 +5,13 @@ buildscript {
     val kotlinVersion: String? by extra
 
     repositories {
-        jcenter()
         google()
+        mavenCentral()
     }
 
     dependencies {
-        classpath("com.android.tools.build:gradle:3.3.0")
+        classpath("com.android.tools.build:gradle:7.0.0")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-
-        classpath("com.github.dcendents:android-maven-gradle-plugin:1.5")
-        classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6")
     }
 }
 
@@ -23,7 +20,7 @@ allprojects {
         maven {
             url = URI("https://dl.bintray.com/jps/maven")
         }
-        jcenter()
         google()
+        mavenCentral()
     }
 }
